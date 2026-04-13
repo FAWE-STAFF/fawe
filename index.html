@@ -12,7 +12,10 @@
         }
 
         body {
-            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            /* Плавный анимированный градиентный фон */
+            background: linear-gradient(125deg, #0a0f1e, #11172b, #0c1022, #161e38);
+            background-size: 400% 400%;
+            animation: gradientFlow 18s ease infinite;
             font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -21,25 +24,38 @@
             justify-content: center;
             padding: 2rem 1.5rem;
             color: #f0f3fa;
+            position: relative;
         }
 
-        /* декоративный фон */
-        .bg-glow {
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* дополнительный светящийся ореол для атмосферы */
+        body::before {
+            content: '';
             position: fixed;
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(88, 130, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
-            top: -20vh;
-            right: -20vw;
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(88, 130, 255, 0.08) 0%, rgba(0,0,0,0) 60%);
             pointer-events: none;
             z-index: 0;
         }
 
-        .bg-glow-left {
-            left: -30vw;
-            top: 40vh;
-            background: radial-gradient(circle, rgba(210, 70, 255, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 70%, rgba(210, 70, 255, 0.06) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
@@ -142,7 +158,6 @@
             display: block;
             image-rendering: crisp-edges;
             image-rendering: pixelated;
-            image-rendering: pixelated;
         }
 
         /* fallback иконка */
@@ -153,7 +168,7 @@
             align-items: center;
             justify-content: center;
             background: linear-gradient(145deg, #2a3a50, #121e2c);
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: bold;
             color: white;
         }
@@ -234,7 +249,6 @@
             line-height: 1.3;
         }
 
-        /* кнопка копирования (маленькая) */
         .copy-hint {
             font-size: 0.7rem;
             margin-left: 6px;
@@ -314,9 +328,6 @@
     </style>
 </head>
 <body>
-<div class="bg-glow"></div>
-<div class="bg-glow bg-glow-left"></div>
-
 <div class="container">
     <div class="hero">
         <div class="badge">⛏️ MINECRAFT STAFF ⛏️</div>
@@ -325,7 +336,7 @@
     </div>
 
     <div class="staff-list" id="staffList">
-        <!-- Динамически через JS добавим карточки, чтобы гарантировать аватарки Minecraft skin (3D головы) -->
+        <!-- Динамическое заполнение через JS -->
     </div>
 
     <div class="footer-note">
@@ -343,8 +354,7 @@
 </div>
 
 <script>
-    // Данные команды в нужном порядке (вертикально)
-    // Ники: pluewe, _chmonya, Sseyn2, BAHKIR
+    // Данные команды — все ники и роли, хелпер теперь выглядит полноценно
     const staffData = [
         {
             nick: "pluewe",
@@ -371,30 +381,18 @@
             nick: "BAHKIR",
             role: "ХЕЛПЕР",
             roleType: "helper",
-            description: "Помощник проекта — всегда на связи, отвечает на вопросы новичков и направляет игроков.",
+            description: "Помощник проекта — всегда на связи, отвечает на вопросы новичков, помогает с ориентацией и поддерживает игроков.",
             icon: "🤝"
         }
     ];
 
-    // Функция генерации URL аватарки Minecraft головы (3D рендер с visage или crafatar)
-    // Используем сервис crafatar.com — отдает 3D голову с наклоном? Но нам нужна именно голова (лицо) с 3D эффектом.
-    // Лучший вариант для "головы из майнкрафт скина" – использовать рендер 3D головы, например через minotar или crafatar с поворотом.
-    // Но чтобы было стильно и похоже на "голову" — используем https://mc-heads.net/avatar/{ник}/60.png?  Но это плоская голова.
-    // Для объёмного эффекта можно использовать тот же mc-heads, но есть способ с 3D-рендером: https://mc-heads.net/head/{ник}/100
-    // Но самый "майнкрафт-стаффный" вариант — голова в изометрии? 
-    // Используем популярный сервис: https://mc-heads.net/avatar/{ник}/90.png — она выглядит как 3D-голова с поворотом (изометрическая проекция)
-    // Это дает эффект объёмной головы. Идеально под стиль Minecraft.
-    // Дополнительно добавим fallback на случай ошибки загрузки.
-    
-    function getMinecraftHeadUrl(nickname, size = 80) {
-        // mc-heads.net предоставляет 3D-голову с углом, очень похоже на игровую
-        // Используем рендер "avatar" который показывает голову с легким поворотом (3D вид)
-        // Документация: https://mc-heads.net/ – avatar выдает 3D модель головы, scale=8 отличный вариант
-        // Для лучшего качества используем размер 100
+    // Функция получения URL 3D-головы из Minecraft
+    function getMinecraftHeadUrl(nickname, size = 100) {
+        // mc-heads.net avatar даёт объёмную 3D-голову с поворотом — идеально для стиля
         return `https://mc-heads.net/avatar/${encodeURIComponent(nickname)}/${size}.png`;
     }
     
-    // Функция копирования
+    // Копирование в буфер
     function copyToClipboard(text) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
@@ -445,27 +443,24 @@
         }, 2200);
     }
     
-    // Обработчик ошибок загрузки изображения — ставим красивый fallback (первые буквы или иконка)
+    // Обработка ошибки загрузки скина
     function handleImageError(imgElement, nickname) {
-        // если картинка не загрузилась, заменим на div с первой буквой
         const parent = imgElement.parentElement;
         if (!parent) return;
         const fallbackDiv = document.createElement('div');
         fallbackDiv.className = 'avatar-fallback';
-        // получаем первую букву или символ
         let firstChar = nickname.charAt(0).toUpperCase();
         if (nickname.startsWith('_')) firstChar = '_' + (nickname.charAt(1) || '').toUpperCase();
         fallbackDiv.innerText = firstChar;
         fallbackDiv.style.fontSize = '2rem';
         fallbackDiv.style.fontWeight = 'bold';
         fallbackDiv.style.background = 'linear-gradient(145deg, #2e3f54, #141f2e)';
-        parent.innerHTML = ''; // очищаем
+        parent.innerHTML = '';
         parent.appendChild(fallbackDiv);
-        // добавим мини-тултип
         fallbackDiv.title = `Не удалось загрузить скин ${nickname}`;
     }
     
-    // Рендер всех карточек в вертикальный список
+    // Рендер всех карточек
     function renderStaff() {
         const container = document.getElementById('staffList');
         if (!container) return;
@@ -475,7 +470,7 @@
             const card = document.createElement('div');
             card.className = 'staff-card';
             
-            // Блок аватарки
+            // Аватар
             const avatarDiv = document.createElement('div');
             avatarDiv.className = 'mc-avatar';
             const img = document.createElement('img');
@@ -488,7 +483,7 @@
             img.onerror = function() { handleImageError(this, member.nick); };
             avatarDiv.appendChild(img);
             
-            // Инфо блок
+            // Информация
             const infoDiv = document.createElement('div');
             infoDiv.className = 'staff-info';
             
@@ -505,7 +500,7 @@
                 copyToClipboard(member.nick);
             };
             
-            // Роль бадж
+            // Бадж роли
             const roleDiv = document.createElement('div');
             roleDiv.className = `role-badge ${member.roleType}`;
             let roleIcon = '';
@@ -530,12 +525,9 @@
         });
     }
     
-    // Дополнительно можно добавить перезагрузку аватарок при ошибке сети, но рендер уже обрабатывает onerror
-    
-    // Также создадим наблюдатель за повторной загрузкой (опционально)
+    // Запуск и анимация появления
     document.addEventListener('DOMContentLoaded', () => {
         renderStaff();
-        // легкая анимация появления карточек
         const cards = document.querySelectorAll('.staff-card');
         cards.forEach((card, idx) => {
             card.style.opacity = '0';
@@ -548,17 +540,16 @@
         });
     });
     
-    // Обновляем при переключении вкладки на всякий случай (если изображения подгружаются)
+    // Дополнительная проверка загрузки изображений после полной загрузки страницы
     window.addEventListener('load', () => {
-        // дополнительная проверка: все img с ошибкой? В рендере уже есть обработчик, но пройдемся по ним
         const allImgs = document.querySelectorAll('.mc-avatar img');
         allImgs.forEach(img => {
             if (!img.complete || img.naturalWidth === 0) {
-                // если уже грузится долго, но не сработал onerror, принудительно проверим через таймаут
                 setTimeout(() => {
                     if (img.naturalWidth === 0 && !img.getAttribute('data-error-fired')) {
                         img.setAttribute('data-error-fired', 'true');
-                        handleImageError(img, img.alt?.replace('Голова ', '') || 'player');
+                        const nick = img.alt?.replace('Голова ', '') || 'player';
+                        handleImageError(img, nick);
                     }
                 }, 1500);
             }
@@ -566,7 +557,6 @@
     });
 </script>
 
-<!-- добавим небольшие улучшения для ссылок и копирования -->
 <style>
     .staff-username {
         cursor: pointer;
@@ -586,14 +576,6 @@
         background: #2f4b9e;
         color: white;
     }
-    /* небольшой отступ для имён */
-    .staff-name {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-    }
-    /* на случай длинных ников */
     @media (max-width: 450px) {
         .staff-name {
             font-size: 1.3rem;
