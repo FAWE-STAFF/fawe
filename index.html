@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Staff проекта | Minecraft Team</title>
+    <title>Staff проекта | Должности и ранги</title>
     <style>
         * {
             margin: 0;
@@ -33,7 +33,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* дополнительный светящийся ореол для атмосферы */
+        /* декоративные свечения */
         body::before {
             content: '';
             position: fixed;
@@ -105,86 +105,89 @@
             padding-top: 1rem;
         }
 
-        /* вертикальный список */
-        .staff-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            margin: 2rem 0 2.5rem;
+        /* секции (группы должностей) */
+        .role-group {
+            background: rgba(10, 15, 28, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 1.8rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
         }
 
-        /* карточка-строка — без аватара, компактная */
-        .staff-card {
-            background: rgba(18, 25, 45, 0.7);
-            backdrop-filter: blur(12px);
-            border-radius: 1.8rem;
-            padding: 1rem 1.8rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.4);
+        .role-group:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(12, 18, 32, 0.6);
+        }
+
+        /* заголовок группы (должность) */
+        .group-header {
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .group-header span:first-child {
+            font-size: 1.5rem;
+        }
+
+        /* список участников внутри группы */
+        .members-list {
+            padding: 0.5rem 0;
+        }
+
+        .member-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.2s;
         }
 
-        .staff-card:hover {
-            transform: translateX(6px);
-            border-color: rgba(120, 170, 255, 0.5);
-            background: rgba(25, 35, 60, 0.85);
+        .member-item:last-child {
+            border-bottom: none;
         }
 
-        /* инфо-блок с ником */
-        .staff-info {
-            flex: 2;
-            min-width: 150px;
+        .member-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            padding-left: 2rem;
         }
 
-        .staff-name {
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            background: linear-gradient(135deg, #f0f3ff, #cdd9ff);
+        .member-nick {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            background: linear-gradient(135deg, #f5f7ff, #cfddff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            line-height: 1.2;
         }
 
-        /* роль — компактный бейдж */
-        .role-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(2px);
-            padding: 0.4rem 1.2rem;
+        .member-status {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
             border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            width: fit-content;
-            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.4);
+            font-weight: 500;
         }
 
-        .role-badge.owner {
-            background: #b8860b30;
-            border-left: 3px solid #f5b042;
-            color: #ffdfa5;
-        }
-
-        .role-badge.sr-mod {
-            background: #2c5a9e30;
-            border-left: 3px solid #4c9aff;
-            color: #bbd4ff;
-        }
-
-        .role-badge.helper {
-            background: #2c6e4e30;
-            border-left: 3px solid #4cdb8c;
-            color: #c2f0d2;
+        .empty-message {
+            padding: 0.9rem 1.8rem;
+            color: #8f9bb5;
+            font-style: italic;
+            font-size: 0.95rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* футер */
@@ -193,7 +196,7 @@
             background: rgba(5, 10, 22, 0.5);
             border-radius: 2rem;
             padding: 1rem 1.5rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             font-size: 0.8rem;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.05);
@@ -217,155 +220,200 @@
         }
 
         @media (max-width: 560px) {
-            .staff-card {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 1.2rem 1.5rem;
-            }
-            .staff-info {
-                width: 100%;
-                text-align: center;
-            }
-            .role-badge {
-                margin-left: auto;
-                margin-right: auto;
-            }
             h1 { font-size: 2.2rem; }
-            .staff-name {
-                text-align: center;
-            }
-        }
-
-        /* никаких аватарок, никаких кнопок копирования, никаких описаний */
-        .staff-username, .copy-hint, .staff-desc, .mc-avatar, .avatar-fallback {
-            display: none;
+            .group-header { font-size: 1.1rem; padding: 0.8rem 1.2rem; }
+            .member-nick { font-size: 1.1rem; }
+            .member-item { padding: 0.7rem 1.2rem; }
+            .member-status { font-size: 0.65rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="hero">
-        <div class="badge">⛏️ MINECRAFT STAFF ⛏️</div>
-        <h1>▸ Команда проекта</h1>
-        <div class="sub">Наши лидеры, модерация и помощь — всегда рядом</div>
+        <div class="badge">⛏️ СТРУКТУРА ПРОЕКТА ⛏️</div>
+        <h1>▸ Должности и ранги</h1>
+        <div class="sub">Команда проекта _chmonya</div>
     </div>
 
-    <div class="staff-list" id="staffList">
-        <!-- Список будет заполнен динамически: только ник и роль, без аватарок, описаний и кнопок копирования -->
+    <div class="roles-container" id="rolesContainer">
+        <!-- Группы будут сгенерированы динамически с нужными цветами и участниками -->
     </div>
 
     <div class="footer-note">
         <div class="stats">
             <div class="stat-item">👑 <strong>2 владельца</strong></div>
+            <div class="stat-item">🎓 <strong>0 кураторов</strong></div>
             <div class="stat-item">🛡️ <strong>1 ст. модератор</strong></div>
+            <div class="stat-item">🔹 <strong>0 модераторов</strong></div>
             <div class="stat-item">🤝 <strong>1 хелпер</strong></div>
-            <div class="stat-item">📋 <strong>4 staff</strong></div>
         </div>
         <div style="margin-top: 8px; font-size: 0.7rem; opacity: 0.7;">
-            ✨ Администрация проекта _chmonya
+            ✨ Актуальный состав команды
         </div>
-        <div style="margin-top: 6px;">© 2025 · Проект _chmonya · Вдохновлено Minecraft</div>
+        <div style="margin-top: 6px;">© 2025 · Проект _chmonya</div>
     </div>
 </div>
 
 <script>
-    // Данные команды: только ники и роли. Описания удалены, аватарки не используются.
-    const staffData = [
+    // Данные о должностях (цвета, список участников)
+    const roleGroups = [
         {
-            nick: "pluewe",
-            role: "ВЛАДЕЛЕЦ",
-            roleType: "owner"
+            title: "Владельцы",
+            icon: "👑",
+            color: "#FF0000",      // цвет для акцента (рамка/текст)
+            members: ["_chmonya", "pluewe"]
         },
         {
-            nick: "_chmonya",
-            role: "ВЛАДЕЛЕЦ",
-            roleType: "owner"
+            title: "Куратор",
+            icon: "🎓",
+            color: "#FF1493",      // DeepPink
+            members: []            // никто
         },
         {
-            nick: "Sseyn2",
-            role: "СТАРШИЙ МОДЕРАТОР",
-            roleType: "sr-mod"
+            title: "Старший модератор",
+            icon: "🛡️",
+            color: "#0000CD",      // MediumBlue
+            members: ["Sseyn2"]
         },
         {
-            nick: "BAHKIR",
-            role: "ХЕЛПЕР",
-            roleType: "helper"
+            title: "Модератор",
+            icon: "🔹",
+            color: "#00BFFF",      // DeepSkyBlue
+            members: []            // никто
+        },
+        {
+            title: "Хелпер",
+            icon: "🤝",
+            color: "#FF8C00",      // DarkOrange
+            members: ["BAHKIR"]
         }
     ];
 
-    // Рендер карточек: только ник + роль, без аватарок, без копирования, без описаний
-    function renderStaff() {
-        const container = document.getElementById('staffList');
+    // Функция для генерации всего списка групп
+    function renderRoleGroups() {
+        const container = document.getElementById('rolesContainer');
         if (!container) return;
         container.innerHTML = '';
-        
-        staffData.forEach(member => {
-            const card = document.createElement('div');
-            card.className = 'staff-card';
+
+        roleGroups.forEach(group => {
+            // Создаем блок группы
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'role-group';
             
-            // Блок с ником
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'staff-info';
+            // Заголовок группы с цветом
+            const header = document.createElement('div');
+            header.className = 'group-header';
+            // добавляем стиль границы снизу с цветом группы (акцент)
+            header.style.borderBottom = `2px solid ${group.color}`;
+            header.innerHTML = `
+                <span>${group.icon}</span>
+                <span style="color: ${group.color}; text-shadow: 0 0 4px rgba(0,0,0,0.3);">${group.title}</span>
+            `;
             
-            const nameSpan = document.createElement('div');
-            nameSpan.className = 'staff-name';
-            nameSpan.innerText = member.nick;
+            // Список участников
+            const membersListDiv = document.createElement('div');
+            membersListDiv.className = 'members-list';
             
-            infoDiv.appendChild(nameSpan);
+            if (group.members.length === 0) {
+                // Пустая группа — показываем "Никто"
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-message';
+                emptyDiv.innerHTML = `<span>⚬</span> На данный момент никто не назначен <span>⚬</span>`;
+                membersListDiv.appendChild(emptyDiv);
+            } else {
+                // Перебираем участников
+                group.members.forEach(member => {
+                    const memberDiv = document.createElement('div');
+                    memberDiv.className = 'member-item';
+                    
+                    const nickSpan = document.createElement('div');
+                    nickSpan.className = 'member-nick';
+                    nickSpan.innerText = member;
+                    
+                    // Маленький статус (можно просто обозначение должности, но для красоты добавим легкий бейдж)
+                    const statusSpan = document.createElement('div');
+                    statusSpan.className = 'member-status';
+                    statusSpan.style.backgroundColor = `${group.color}20`;
+                    statusSpan.style.borderLeft = `3px solid ${group.color}`;
+                    statusSpan.style.color = '#eef3ff';
+                    // Укороченное название роли
+                    let shortRole = group.title;
+                    if (group.title === "Старший модератор") shortRole = "Ст. модератор";
+                    statusSpan.innerText = shortRole;
+                    
+                    memberDiv.appendChild(nickSpan);
+                    memberDiv.appendChild(statusSpan);
+                    membersListDiv.appendChild(memberDiv);
+                });
+            }
             
-            // Бадж роли
-            const roleDiv = document.createElement('div');
-            roleDiv.className = `role-badge ${member.roleType}`;
-            let roleIcon = '';
-            if (member.roleType === 'owner') roleIcon = '👑 ';
-            else if (member.roleType === 'sr-mod') roleIcon = '🛡️ ';
-            else roleIcon = '🤝 ';
-            roleDiv.innerHTML = `${roleIcon}${member.role}`;
-            
-            card.appendChild(infoDiv);
-            card.appendChild(roleDiv);
-            
-            container.appendChild(card);
+            groupDiv.appendChild(header);
+            groupDiv.appendChild(membersListDiv);
+            container.appendChild(groupDiv);
         });
     }
-    
-    // Анимация появления карточек
+
+    // Анимация появления групп при загрузке
     document.addEventListener('DOMContentLoaded', () => {
-        renderStaff();
-        const cards = document.querySelectorAll('.staff-card');
-        cards.forEach((card, idx) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateX(-12px)';
+        renderRoleGroups();
+        
+        // Плавное появление групп с задержкой
+        const groups = document.querySelectorAll('.role-group');
+        groups.forEach((group, idx) => {
+            group.style.opacity = '0';
+            group.style.transform = 'translateY(15px)';
             setTimeout(() => {
-                card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                card.style.opacity = '1';
-                card.style.transform = 'translateX(0)';
-            }, idx * 80);
+                group.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                group.style.opacity = '1';
+                group.style.transform = 'translateY(0)';
+            }, idx * 100);
         });
     });
 </script>
 
 <style>
-    /* дополнительные гарантии, что ничего лишнего не появится */
-    .staff-username, .copy-hint, .staff-desc, .mc-avatar, .avatar-fallback, [onclick], .staff-username:hover {
-        display: none !important;
-        pointer-events: none !important;
+    /* Дополнительные стили для цветовых акцентов */
+    .group-header span:last-child {
+        font-weight: 700;
+        letter-spacing: 0.3px;
     }
-    .role-badge {
-        user-select: none;
+    
+    .member-status {
+        font-weight: 500;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        backdrop-filter: blur(2px);
     }
-    ::selection {
-        background: #2f4b9e;
-        color: white;
+    
+    .empty-message {
+        font-family: monospace;
+        letter-spacing: 0.3px;
     }
-    @media (max-width: 450px) {
-        .staff-name {
-            font-size: 1.3rem;
-        }
-        .role-badge {
-            font-size: 0.7rem;
-            padding: 0.3rem 1rem;
-        }
+    
+    /* кастомный скролл для красоты (опционально) */
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0f1422;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2e3a5e;
+        border-radius: 10px;
+    }
+    
+    .role-group {
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    
+    .member-item .member-nick {
+        transition: 0.1s;
+    }
+    
+    .member-item:hover .member-nick {
+        text-shadow: 0 0 5px rgba(255,255,200,0.5);
     }
 </style>
 </body>
