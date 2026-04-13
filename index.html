@@ -232,8 +232,8 @@
 <div class="container">
     <div class="hero">
         <div class="badge">FAWEA</div>
-        <h1>Таблица стафф</h1>
-        <div class="sub">Команда проекта FAWE</div>
+        <h1>Команда проекта FAWE</h1>
+        <div class="sub"></div>
     </div>
 
     <div class="roles-container" id="rolesContainer">
@@ -259,10 +259,10 @@
     // Данные о должностях (цвета, список участников)
     const roleGroups = [
         {
-            title: "Владельцы",
+            title: "Основатели",
             icon: "",
             color: "#FF0000",      // цвет для акцента (рамка/текст)
-            members: ["_chmonya", "pluewe", "test1"]
+            members: ["_chmonya", "pluewe"]
         },
         {
             title: "Куратор",
@@ -319,7 +319,7 @@
                 // Пустая группа — показываем "Никто"
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'empty-message';
-                emptyDiv.innerHTML = `<span>⚬</span> На данный момент никто не назначен <span>⚬</span>`;
+                emptyDiv.innerHTML = `<span>⚬</span> Никто <span>⚬</span>`;
                 membersListDiv.appendChild(emptyDiv);
             } else {
                 // Перебираем участников
