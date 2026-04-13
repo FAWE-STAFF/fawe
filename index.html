@@ -109,23 +109,24 @@
         .staff-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.25rem;
             margin: 2rem 0 2.5rem;
         }
 
-        /* карточка-строка */
+        /* карточка-строка — без аватара, компактная */
         .staff-card {
             background: rgba(18, 25, 45, 0.7);
             backdrop-filter: blur(12px);
             border-radius: 1.8rem;
-            padding: 1rem 1.5rem 1rem 1rem;
+            padding: 1rem 1.8rem;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
-            gap: 1.2rem;
+            justify-content: space-between;
             flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .staff-card:hover {
@@ -134,49 +135,10 @@
             background: rgba(25, 35, 60, 0.85);
         }
 
-        /* аватарка — голова из Minecraft (3D-рендер) */
-        .mc-avatar {
-            width: 70px;
-            height: 70px;
-            min-width: 70px;
-            background: #1e2a3a;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 10px 18px -6px black;
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            background-color: #2d3e4b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
-
-        .mc-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            image-rendering: crisp-edges;
-            image-rendering: pixelated;
-        }
-
-        /* fallback иконка */
-        .avatar-fallback {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(145deg, #2a3a50, #121e2c);
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-        }
-
-        /* инфо-блок */
+        /* инфо-блок с ником */
         .staff-info {
             flex: 2;
-            min-width: 160px;
+            min-width: 150px;
         }
 
         .staff-name {
@@ -190,38 +152,21 @@
             line-height: 1.2;
         }
 
-        .staff-username {
-            font-size: 0.8rem;
-            color: #8a9bcf;
-            font-family: monospace;
-            background: rgba(0,0,0,0.3);
-            display: inline-block;
-            padding: 0.2rem 0.7rem;
-            border-radius: 40px;
-            margin-top: 4px;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .staff-username:hover {
-            background: rgba(100, 150, 255, 0.3);
-            color: white;
-        }
-
+        /* роль — компактный бейдж */
         .role-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(2px);
-            padding: 0.35rem 1rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 40px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            margin-top: 8px;
             width: fit-content;
+            white-space: nowrap;
         }
 
         .role-badge.owner {
@@ -240,25 +185,6 @@
             background: #2c6e4e30;
             border-left: 3px solid #4cdb8c;
             color: #c2f0d2;
-        }
-
-        .staff-desc {
-            font-size: 0.85rem;
-            color: #9dafdf;
-            margin-top: 6px;
-            line-height: 1.3;
-        }
-
-        .copy-hint {
-            font-size: 0.7rem;
-            margin-left: 6px;
-            opacity: 0.6;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .copy-hint:hover {
-            opacity: 1;
         }
 
         /* футер */
@@ -294,12 +220,7 @@
             .staff-card {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 1.2rem;
-            }
-            .mc-avatar {
-                width: 80px;
-                height: 80px;
-                align-self: center;
+                padding: 1.2rem 1.5rem;
             }
             .staff-info {
                 width: 100%;
@@ -309,21 +230,15 @@
                 margin-left: auto;
                 margin-right: auto;
             }
-            .staff-desc {
+            h1 { font-size: 2.2rem; }
+            .staff-name {
                 text-align: center;
             }
-            h1 { font-size: 2.2rem; }
         }
 
-        /* тост уведомление */
-        .custom-toast {
-            transition: opacity 0.25s ease;
-            pointer-events: none;
-            font-weight: 500;
-            backdrop-filter: blur(12px);
-            background: rgba(10, 20, 35, 0.95) !important;
-            border: 1px solid rgba(255,255,255,0.2);
-            font-family: inherit;
+        /* никаких аватарок, никаких кнопок копирования, никаких описаний */
+        .staff-username, .copy-hint, .staff-desc, .mc-avatar, .avatar-fallback {
+            display: none;
         }
     </style>
 </head>
@@ -336,7 +251,7 @@
     </div>
 
     <div class="staff-list" id="staffList">
-        <!-- Динамическое заполнение через JS -->
+        <!-- Список будет заполнен динамически: только ник и роль, без аватарок, описаний и кнопок копирования -->
     </div>
 
     <div class="footer-note">
@@ -347,120 +262,38 @@
             <div class="stat-item">📋 <strong>4 staff</strong></div>
         </div>
         <div style="margin-top: 8px; font-size: 0.7rem; opacity: 0.7;">
-            💡 Нажмите на никнейм, чтобы скопировать — аватарка загружается с Minecraft skin (голова 3D)
+            ✨ Администрация проекта _chmonya
         </div>
         <div style="margin-top: 6px;">© 2025 · Проект _chmonya · Вдохновлено Minecraft</div>
     </div>
 </div>
 
 <script>
-    // Данные команды — все ники и роли, хелпер теперь выглядит полноценно
+    // Данные команды: только ники и роли. Описания удалены, аватарки не используются.
     const staffData = [
         {
             nick: "pluewe",
             role: "ВЛАДЕЛЕЦ",
-            roleType: "owner",
-            description: "Со-основатель, отвечает за сообщество и развитие. Душа проекта и главный стратег.",
-            icon: "👑"
+            roleType: "owner"
         },
         {
             nick: "_chmonya",
             role: "ВЛАДЕЛЕЦ",
-            roleType: "owner",
-            description: "Основатель проекта. Заведует видением, технической частью и финальными решениями.",
-            icon: "⭐"
+            roleType: "owner"
         },
         {
             nick: "Sseyn2",
             role: "СТАРШИЙ МОДЕРАТОР",
-            roleType: "sr-mod",
-            description: "Следит за порядком, управляет модерацией, помогает решать конфликты и защищает уют.",
-            icon: "🛡️"
+            roleType: "sr-mod"
         },
         {
             nick: "BAHKIR",
             role: "ХЕЛПЕР",
-            roleType: "helper",
-            description: "Помощник проекта — всегда на связи, отвечает на вопросы новичков, помогает с ориентацией и поддерживает игроков.",
-            icon: "🤝"
+            roleType: "helper"
         }
     ];
 
-    // Функция получения URL 3D-головы из Minecraft
-    function getMinecraftHeadUrl(nickname, size = 100) {
-        // mc-heads.net avatar даёт объёмную 3D-голову с поворотом — идеально для стиля
-        return `https://mc-heads.net/avatar/${encodeURIComponent(nickname)}/${size}.png`;
-    }
-    
-    // Копирование в буфер
-    function copyToClipboard(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`Скопирован ник: ${text}`, '#88aaff');
-            }).catch(() => fallbackCopy(text));
-        } else {
-            fallbackCopy(text);
-        }
-    }
-    
-    function fallbackCopy(text) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        showToast(`Скопирован ник: ${text}`, '#88aaff');
-    }
-    
-    function showToast(message, color = '#4c9aff') {
-        let toast = document.querySelector('.custom-toast');
-        if (toast) toast.remove();
-        toast = document.createElement('div');
-        toast.className = 'custom-toast';
-        toast.innerText = message;
-        toast.style.position = 'fixed';
-        toast.style.bottom = '25px';
-        toast.style.left = '50%';
-        toast.style.transform = 'translateX(-50%)';
-        toast.style.backgroundColor = '#0f172fe6';
-        toast.style.color = '#ffffff';
-        toast.style.padding = '10px 24px';
-        toast.style.borderRadius = '40px';
-        toast.style.fontSize = '0.85rem';
-        toast.style.fontWeight = '500';
-        toast.style.borderLeft = `4px solid ${color}`;
-        toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.4)';
-        toast.style.zIndex = '9999';
-        toast.style.backdropFilter = 'blur(12px)';
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transition = 'opacity 0.25s ease';
-            setTimeout(() => {
-                if (toast && toast.remove) toast.remove();
-            }, 300);
-        }, 2200);
-    }
-    
-    // Обработка ошибки загрузки скина
-    function handleImageError(imgElement, nickname) {
-        const parent = imgElement.parentElement;
-        if (!parent) return;
-        const fallbackDiv = document.createElement('div');
-        fallbackDiv.className = 'avatar-fallback';
-        let firstChar = nickname.charAt(0).toUpperCase();
-        if (nickname.startsWith('_')) firstChar = '_' + (nickname.charAt(1) || '').toUpperCase();
-        fallbackDiv.innerText = firstChar;
-        fallbackDiv.style.fontSize = '2rem';
-        fallbackDiv.style.fontWeight = 'bold';
-        fallbackDiv.style.background = 'linear-gradient(145deg, #2e3f54, #141f2e)';
-        parent.innerHTML = '';
-        parent.appendChild(fallbackDiv);
-        fallbackDiv.title = `Не удалось загрузить скин ${nickname}`;
-    }
-    
-    // Рендер всех карточек
+    // Рендер карточек: только ник + роль, без аватарок, без копирования, без описаний
     function renderStaff() {
         const container = document.getElementById('staffList');
         if (!container) return;
@@ -470,20 +303,7 @@
             const card = document.createElement('div');
             card.className = 'staff-card';
             
-            // Аватар
-            const avatarDiv = document.createElement('div');
-            avatarDiv.className = 'mc-avatar';
-            const img = document.createElement('img');
-            const headUrl = getMinecraftHeadUrl(member.nick, 100);
-            img.src = headUrl;
-            img.alt = `Голова ${member.nick}`;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            img.onerror = function() { handleImageError(this, member.nick); };
-            avatarDiv.appendChild(img);
-            
-            // Информация
+            // Блок с ником
             const infoDiv = document.createElement('div');
             infoDiv.className = 'staff-info';
             
@@ -491,14 +311,7 @@
             nameSpan.className = 'staff-name';
             nameSpan.innerText = member.nick;
             
-            const usernameSpan = document.createElement('div');
-            usernameSpan.className = 'staff-username';
-            usernameSpan.innerText = `@${member.nick}`;
-            usernameSpan.title = 'Нажмите, чтобы скопировать ник';
-            usernameSpan.onclick = (e) => {
-                e.stopPropagation();
-                copyToClipboard(member.nick);
-            };
+            infoDiv.appendChild(nameSpan);
             
             // Бадж роли
             const roleDiv = document.createElement('div');
@@ -509,23 +322,14 @@
             else roleIcon = '🤝 ';
             roleDiv.innerHTML = `${roleIcon}${member.role}`;
             
-            const descDiv = document.createElement('div');
-            descDiv.className = 'staff-desc';
-            descDiv.innerText = member.description;
-            
-            infoDiv.appendChild(nameSpan);
-            infoDiv.appendChild(usernameSpan);
-            infoDiv.appendChild(roleDiv);
-            infoDiv.appendChild(descDiv);
-            
-            card.appendChild(avatarDiv);
             card.appendChild(infoDiv);
+            card.appendChild(roleDiv);
             
             container.appendChild(card);
         });
     }
     
-    // Запуск и анимация появления
+    // Анимация появления карточек
     document.addEventListener('DOMContentLoaded', () => {
         renderStaff();
         const cards = document.querySelectorAll('.staff-card');
@@ -539,38 +343,16 @@
             }, idx * 80);
         });
     });
-    
-    // Дополнительная проверка загрузки изображений после полной загрузки страницы
-    window.addEventListener('load', () => {
-        const allImgs = document.querySelectorAll('.mc-avatar img');
-        allImgs.forEach(img => {
-            if (!img.complete || img.naturalWidth === 0) {
-                setTimeout(() => {
-                    if (img.naturalWidth === 0 && !img.getAttribute('data-error-fired')) {
-                        img.setAttribute('data-error-fired', 'true');
-                        const nick = img.alt?.replace('Голова ', '') || 'player';
-                        handleImageError(img, nick);
-                    }
-                }, 1500);
-            }
-        });
-    });
 </script>
 
 <style>
-    .staff-username {
-        cursor: pointer;
-        transition: 0.1s linear;
-        user-select: none;
-    }
-    .staff-card .mc-avatar {
-        transition: transform 0.2s;
-    }
-    .staff-card:hover .mc-avatar {
-        transform: scale(1.02);
+    /* дополнительные гарантии, что ничего лишнего не появится */
+    .staff-username, .copy-hint, .staff-desc, .mc-avatar, .avatar-fallback, [onclick], .staff-username:hover {
+        display: none !important;
+        pointer-events: none !important;
     }
     .role-badge {
-        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        user-select: none;
     }
     ::selection {
         background: #2f4b9e;
@@ -581,7 +363,8 @@
             font-size: 1.3rem;
         }
         .role-badge {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
+            padding: 0.3rem 1rem;
         }
     }
 </style>
