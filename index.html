@@ -1,1 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Staff проекта | Chmonya Team</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            color: #f0f3fa;
+        }
+
+        /* декоративный элемент */
+        .bg-glow {
+            position: fixed;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(88, 130, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            top: -20vh;
+            right: -20vw;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-left {
+            left: -30vw;
+            top: 40vh;
+            background: radial-gradient(circle, rgba(210, 70, 255, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        /* контейнер */
+        .container {
+            max-width: 1300px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* шапка */
+        .hero {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #a9b8ff;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #b9c8ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .sub {
+            font-size: 1.1rem;
+            color: #8f9bb5;
+            max-width: 550px;
+            margin: 0 auto;
+            border-top: 1px dashed rgba(255,255,255,0.2);
+            padding-top: 1rem;
+        }
+
+        /* сетка карточек */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 3rem;
+        }
+
+        /* карточка */
+        .card {
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(120, 170, 255, 0.4);
+            box-shadow: 0 28px 40px -16px rgba(0, 0, 0, 0.5);
+            background: rgba(25, 35, 60, 0.8);
+        }
+
+        /* аватар (иконка) */
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #1e2a44, #0f172f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 3rem;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: 0.2s;
+        }
+
+        /* разные фоны для аватарок */
+        .card:nth-child(1) .avatar { background: linear-gradient(145deg, #2a3a60, #141e34); border-color: #ffd966; }
+        .card:nth-child(2) .avatar { background: linear-gradient(145deg, #2a3a60, #141e34); border-color: #ffd966; }
+        .card:nth-child(3) .avatar { background: linear-gradient(145deg, #293b55, #10192e); border-color: #6c9eff; }
+        .card:nth-child(4) .avatar { background: linear-gradient(145deg, #25324b, #0e1428); border-color: #6fcf97; }
+
+        .staff-name {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #f0f3ff, #cdd9ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.3rem;
+        }
+
+        .staff-username {
+            font-size: 0.95rem;
+            color: #8a9bcf;
+            margin-bottom: 1rem;
+            word-break: break-word;
+            font-family: monospace;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        .role {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 1rem 0 1rem;
+        }
+
+        /* цвета ролей */
+        .role.owner { background: #b8860b30; border-left: 3px solid #f5b042; color: #ffdfa5; }
+        .role.sr-mod { background: #2c5a9e30; border-left: 3px solid #4c9aff; color: #bbd4ff; }
+        .role.helper { background: #2c6e4e30; border-left: 3px solid #4cdb8c; color: #c2f0d2; }
+
+        .desc {
+            font-size: 0.9rem;
+            color: #9dafdf;
+            margin-top: 1rem;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 1rem;
+        }
+
+        /* дополнительная инфа */
+        .footer-note {
+            text-align: center;
+            background: rgba(5, 10, 22, 0.5);
+            border-radius: 2rem;
+            padding: 1rem 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.3);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+        }
+
+        @media (max-width: 680px) {
+            h1 { font-size: 2.2rem; }
+            .staff-grid { gap: 1.2rem; }
+            .card { padding: 1.4rem; }
+            .staff-name { font-size: 1.6rem; }
+        }
+
+        /* кнопка копирования / эфект */
+        .copy-tip {
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .copy-tip:active {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-glow bg-glow-left"></div>
+
+<div class="container">
+    <div class="hero">
+        <div class="badge">✨ PROJECT TEAM ✨</div>
+        <h1>STAFF <span style="color: #88aaff;">⋆  Chmonya</span></h1>
+        <div class="sub">Надёжная команда — душа проекта</div>
+    </div>
+
+    <div class="staff-grid">
+        <!-- карточка _chmonya - владелец -->
+        <div class="card" data-nick="_chmonya" data-role="owner">
+            <div class="avatar">
+                <span>👑</span>
+            </div>
+            <div class="staff-name">_chmonya</div>
+            <div class="staff-username copy-tip" onclick="copyToClipboard('_chmonya')" title="Нажмите, чтобы скопировать ник">@_chmonya</div>
+            <div class="role owner">⭐ ВЛАДЕЛЕЦ ⭐</div>
+            <div class="desc">Основатель и главный архитектор проекта. Отвечает за видение, развитие и финальные решения.</div>
+        </div>
+
+        <!-- карточка pluewe - владелец -->
+        <div class="card" data-nick="pluewe" data-role="owner">
+            <div class="avatar">
+                <span>👑</span>
+            </div>
+            <div class="staff-name">pluewe</div>
+            <div class="staff-username copy-tip" onclick="copyToClipboard('pluewe')" title="Нажмите, чтобы скопировать ник">@pluewe</div>
+            <div class="role owner">⭐ ВЛАДЕЛЕЦ ⭐</div>
+            <div class="desc">Со-основатель, отвечает за сообщество и техническую часть. Душа команды и главный генератор идей.</div>
+        </div>
+
+        <!-- карточка sseyn2 - старший модератор -->
+        <div class="card" data-nick="sseyn2" data-role="sr-mod">
+            <div class="avatar">
+                <span>🛡️</span>
+            </div>
+            <div class="staff-name">sseyn2</div>
+            <div class="staff-username copy-tip" onclick="copyToClipboard('sseyn2')" title="Нажмите, чтобы скопировать ник">@sseyn2</div>
+            <div class="role sr-mod">🔹 СТАРШИЙ МОДЕРАТОР 🔹</div>
+            <div class="desc">Следит за порядком, управляет модерацией, решает спорные ситуации и помогает участникам.</div>
+        </div>
+
+        <!-- карточка BAHKIR - Хелпер -->
+        <div class="card" data-nick="BAHKIR" data-role="helper">
+            <div class="avatar">
+                <span>🤝</span>
+            </div>
+            <div class="staff-name">BAHKIR</div>
+            <div class="staff-username copy-tip" onclick="copyToClipboard('BAHKIR')" title="Нажмите, чтобы скопировать ник">@BAHKIR</div>
+            <div class="role helper">🟢 ХЕЛПЕР 🟢</div>
+            <div class="desc">Помощник проекта — отвечает на вопросы новичков, помогает с ориентированием и всегда готов поддержать.</div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <div class="stats">
+            <div class="stat-item">👥 <strong>2 владельца</strong></div>
+            <div class="stat-item">🛡️ <strong>1 старший модератор</strong></div>
+            <div class="stat-item">🤝 <strong>1 хелпер</strong></div>
+            <div class="stat-item">📋 <strong>Всего: 4 staff</strong></div>
+        </div>
+        <div style="margin-top: 12px; font-size: 0.75rem; opacity: 0.7;">
+            💡 Нажмите на никнейм, чтобы скопировать в буфер обмена
+        </div>
+        <div style="margin-top: 8px;">
+            © 2025 · Проект _chmonya · Доверие и уют
+        </div>
+    </div>
+</div>
+
+<script>
+    // функция копирования текста в буфер
+    function copyToClipboard(text) {
+        // современный метод clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Скопировано: ${text}`, '#88aaff');
+            }).catch(err => {
+                console.warn('Clipboard error: ', err);
+                fallbackCopy(text);
+            });
+        } else {
+            fallbackCopy(text);
+        }
+    }
+
+    // fallback для старых браузеров
+    function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(`Скопировано: ${text}`, '#88aaff');
+    }
+
+    // создание красивого тоста (уведомление)
+    function showToast(message, color = '#4c9aff') {
+        let toast = document.querySelector('.custom-toast');
+        if (toast) toast.remove();
+
+        toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.innerText = message;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '30px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = '#111a2be6';
+        toast.style.backdropFilter = 'blur(10px)';
+        toast.style.color = '#ffffff';
+        toast.style.padding = '10px 22px';
+        toast.style.borderRadius = '60px';
+        toast.style.fontSize = '0.9rem';
+        toast.style.fontWeight = '500';
+        toast.style.borderLeft = `4px solid ${color}`;
+        toast.style.boxShadow = '0 10px 20px rgba(0,0,0,0.3)';
+        toast.style.zIndex = '9999';
+        toast.style.fontFamily = 'inherit';
+        toast.style.letterSpacing = '0.3px';
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                if (toast && toast.remove) toast.remove();
+            }, 300);
+        }, 2200);
+    }
+
+    // дополнительный эффект: легкая анимация при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, idx) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, idx * 80);
+        });
+    });
+</script>
+
+<!-- добавляем немного дополнительных стилей для тоста и плавности -->
+<style>
+    .custom-toast {
+        transition: opacity 0.25s ease;
+        pointer-events: none;
+        font-weight: 500;
+        backdrop-filter: blur(12px);
+        background: rgba(10, 20, 35, 0.9) !important;
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+    .staff-username {
+        transition: all 0.1s;
+    }
+    .staff-username:hover {
+        background: rgba(100, 150, 255, 0.2);
+        text-shadow: 0 0 2px white;
+    }
+    ::selection {
+        background: #2f4b9e;
+        color: white;
+    }
+</style>
+
+</body>
+</html>
