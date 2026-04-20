@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Staff проекта | Должности и ранги с аватарками</title>
+    <title>FAWE STAFF</title>
     <style>
         * {
             margin: 0;
@@ -282,9 +282,9 @@
 <body>
 <div class="container">
     <div class="hero">
-        <div class="badge">⛏️ MINECRAFT СТАФФ ⛏️</div>
-        <h1>▸ Должности и ранги</h1>
-        <div class="sub">Команда проекта _chmonya — квадратные аватарки Minecraft</div>
+        <div class="badge">FAWE</div>
+        <h1>Команда Проекта</h1>
+        <div class="sub"></div>
     </div>
 
     <div class="roles-container" id="rolesContainer">
@@ -293,11 +293,11 @@
 
     <div class="footer-note">
         <div class="stats">
-            <div class="stat-item">👑 <strong>2 владельца</strong></div>
-            <div class="stat-item">🎓 <strong>0 кураторов</strong></div>
-            <div class="stat-item">🛡️ <strong>1 ст. модератор</strong></div>
-            <div class="stat-item">🔹 <strong>0 модераторов</strong></div>
-            <div class="stat-item">🤝 <strong>1 хелпер</strong></div>
+            <div class="stat-item"><strong>2 владельца</strong></div>
+            <div class="stat-item"><strong>1 куратор</strong></div>
+            <div class="stat-item"><strong>0 ст. модераторов</strong></div>
+            <div class="stat-item"><strong>0 модераторов</strong></div>
+            <div class="stat-item"><strong>3 хелпера</strong></div>
         </div>
         <div style="margin-top: 8px; font-size: 0.7rem; opacity: 0.7;">
             🖼️ Аватарки загружаются через Minotar (квадратные, без скруглений)
@@ -311,33 +311,33 @@
     const roleGroups = [
         {
             title: "Владельцы",
-            icon: "👑",
+            icon: "",
             color: "#FF0000",      // красный
             members: ["_chmonya", "pluewe"]
         },
         {
             title: "Куратор",
-            icon: "🎓",
+            icon: "",
             color: "#FF1493",      // DeepPink
-            members: []            // никто
+            members: ["Ssen2"]            // никто
         },
         {
             title: "Старший модератор",
-            icon: "🛡️",
+            icon: "",
             color: "#0000CD",      // MediumBlue
-            members: ["Sseyn2"]
+            members: []
         },
         {
             title: "Модератор",
-            icon: "🔹",
+            icon: "",
             color: "#00BFFF",      // DeepSkyBlue
             members: []            // никто
         },
         {
             title: "Хелпер",
-            icon: "🤝",
+            icon: "",
             color: "#FF8C00",      // DarkOrange
-            members: ["BAHKIR"]
+            members: ["BAHKIR", "itzWeid", "azxsdcvv"]
         }
     ];
 
@@ -357,11 +357,11 @@
         fallbackDiv.innerText = firstChar;
         fallbackDiv.style.fontSize = '1rem';
         fallbackDiv.style.fontWeight = 'bold';
-        fallbackDiv.style.background = 'linear-gradient(145deg, #2e3f54, #141f2e)';
+        fallbackDiv.style.background = 'linear-gradient(145deg, #4625A1, #4625A1)';
         fallbackDiv.style.borderRadius = '0'; // квадратный fallback
         parent.innerHTML = '';
         parent.appendChild(fallbackDiv);
-        fallbackDiv.title = `Не удалось загрузить скин ${nickname}`;
+        fallbackDiv.title = ``;
     }
 
     // Функция для генерации всего списка групп
@@ -392,7 +392,7 @@
                 // Пустая группа — показываем "Никто"
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'empty-message';
-                emptyDiv.innerHTML = `<span>⚬</span> На данный момент никто не назначен <span>⚬</span>`;
+                emptyDiv.innerHTML = `<span></span> Никого <span></span>`;
                 membersListDiv.appendChild(emptyDiv);
             } else {
                 // Перебираем участников
