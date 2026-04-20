@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>FAWE</title>
+    <title>Staff проекта | Должности и ранги с аватарками</title>
     <style>
         * {
             margin: 0;
@@ -147,9 +147,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.9rem 1.8rem;
+            padding: 0.8rem 1.5rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             transition: 0.2s;
+            gap: 1rem;
         }
 
         .member-item:last-child {
@@ -158,11 +159,54 @@
 
         .member-item:hover {
             background: rgba(255, 255, 255, 0.03);
-            padding-left: 2rem;
+            padding-left: 1.8rem;
+        }
+
+        /* аватарка */
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #1e2a3a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            transition: 0.2s;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        /* fallback если аватар не загрузился */
+        .avatar-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #2a3a50, #121e2c);
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .member-info {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .member-nick {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             letter-spacing: -0.2px;
             background: linear-gradient(135deg, #f5f7ff, #cfddff);
@@ -172,11 +216,14 @@
         }
 
         .member-status {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             padding: 0.2rem 0.8rem;
             border-radius: 40px;
             background: rgba(0, 0, 0, 0.4);
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .empty-message {
@@ -222,36 +269,38 @@
         @media (max-width: 560px) {
             h1 { font-size: 2.2rem; }
             .group-header { font-size: 1.1rem; padding: 0.8rem 1.2rem; }
-            .member-nick { font-size: 1.1rem; }
-            .member-item { padding: 0.7rem 1.2rem; }
-            .member-status { font-size: 0.65rem; }
+            .member-nick { font-size: 1rem; }
+            .member-item { padding: 0.7rem 1rem; flex-wrap: wrap; }
+            .member-info { flex-wrap: wrap; gap: 0.6rem; }
+            .member-status { font-size: 0.6rem; }
+            .member-avatar { width: 36px; height: 36px; min-width: 36px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="hero">
-        <div class="badge">FAWE</div>
-        <h1>Команда проекта FAWE</h1>
-        <div class="sub"></div>
+        <div class="badge">⛏️ MINECRAFT СТАФФ ⛏️</div>
+        <h1>▸ Должности и ранги</h1>
+        <div class="sub">Команда проекта _chmonya с аватарками Minecraft</div>
     </div>
 
     <div class="roles-container" id="rolesContainer">
-        <!-- Группы будут сгенерированы динамически с нужными цветами и участниками -->
+        <!-- Группы будут сгенерированы динамически -->
     </div>
 
     <div class="footer-note">
         <div class="stats">
-            <div class="stat-item"> <strong>2 владельца</strong></div>
-            <div class="stat-item"> <strong>1 куратор</strong></div>
-            <div class="stat-item"> <strong>0 ст. модераторов</strong></div>
-            <div class="stat-item"> <strong>0 модераторов</strong></div>
-            <div class="stat-item"> <strong>2 хелпера</strong></div>
+            <div class="stat-item">👑 <strong>2 владельца</strong></div>
+            <div class="stat-item">🎓 <strong>0 кураторов</strong></div>
+            <div class="stat-item">🛡️ <strong>1 ст. модератор</strong></div>
+            <div class="stat-item">🔹 <strong>0 модераторов</strong></div>
+            <div class="stat-item">🤝 <strong>1 хелпер</strong></div>
         </div>
         <div style="margin-top: 8px; font-size: 0.7rem; opacity: 0.7;">
-            
+            🖼️ Аватарки загружаются через Minotar (головы Minecraft)
         </div>
-        <div style="margin-top: 6px;">© 2026 · FAWE</div>
+        <div style="margin-top: 6px;">© 2025 · Проект _chmonya</div>
     </div>
 </div>
 
@@ -259,36 +308,60 @@
     // Данные о должностях (цвета, список участников)
     const roleGroups = [
         {
-            title: "Основатели",
-            icon: "",
-            color: "#FF0000",      // цвет для акцента (рамка/текст)
+            title: "Владельцы",
+            icon: "👑",
+            color: "#FF0000",      // красный
             members: ["_chmonya", "pluewe"]
         },
         {
             title: "Куратор",
-            icon: "",
+            icon: "🎓",
             color: "#FF1493",      // DeepPink
-            members: ["Sseyn2"]            // никто
+            members: []            // никто
         },
         {
             title: "Старший модератор",
-            icon: "",
+            icon: "🛡️",
             color: "#0000CD",      // MediumBlue
-            members: []
+            members: ["Sseyn2"]
         },
         {
             title: "Модератор",
-            icon: "",
+            icon: "🔹",
             color: "#00BFFF",      // DeepSkyBlue
             members: []            // никто
         },
         {
             title: "Хелпер",
-            icon: "",
-            color: "#32CD32",      // DarkOrange
-            members: ["BAHKIR", "itzWeid"]
+            icon: "🤝",
+            color: "#FF8C00",      // DarkOrange
+            members: ["BAHKIR"]
         }
     ];
+
+    // Функция получения аватарки через Minotar (размер 32)
+    function getAvatarUrl(nickname) {
+        // Minotar avatar — отличный сервис для Minecraft голов (3D вид с поворотом)
+        // Используем размер 32 для оптимальной четкости на retina
+        return `https://minotar.net/avatar/${encodeURIComponent(nickname)}/32.png`;
+    }
+
+    // Обработка ошибки загрузки аватарки (ставим первую букву ника)
+    function handleAvatarError(imgElement, nickname) {
+        const parent = imgElement.parentElement;
+        if (!parent) return;
+        const fallbackDiv = document.createElement('div');
+        fallbackDiv.className = 'avatar-fallback';
+        let firstChar = nickname.charAt(0).toUpperCase();
+        if (nickname.startsWith('_')) firstChar = '_' + (nickname.charAt(1) || '').toUpperCase();
+        fallbackDiv.innerText = firstChar;
+        fallbackDiv.style.fontSize = '1rem';
+        fallbackDiv.style.fontWeight = 'bold';
+        fallbackDiv.style.background = 'linear-gradient(145deg, #2e3f54, #141f2e)';
+        parent.innerHTML = '';
+        parent.appendChild(fallbackDiv);
+        fallbackDiv.title = `Не удалось загрузить скин ${nickname}`;
+    }
 
     // Функция для генерации всего списка групп
     function renderRoleGroups() {
@@ -304,7 +377,6 @@
             // Заголовок группы с цветом
             const header = document.createElement('div');
             header.className = 'group-header';
-            // добавляем стиль границы снизу с цветом группы (акцент)
             header.style.borderBottom = `2px solid ${group.color}`;
             header.innerHTML = `
                 <span>${group.icon}</span>
@@ -319,7 +391,7 @@
                 // Пустая группа — показываем "Никто"
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'empty-message';
-                emptyDiv.innerHTML = `<span>⚬</span> Никто <span>⚬</span>`;
+                emptyDiv.innerHTML = `<span>⚬</span> На данный момент никто не назначен <span>⚬</span>`;
                 membersListDiv.appendChild(emptyDiv);
             } else {
                 // Перебираем участников
@@ -327,23 +399,39 @@
                     const memberDiv = document.createElement('div');
                     memberDiv.className = 'member-item';
                     
+                    // Блок аватарки
+                    const avatarDiv = document.createElement('div');
+                    avatarDiv.className = 'member-avatar';
+                    const img = document.createElement('img');
+                    const avatarUrl = getAvatarUrl(member);
+                    img.src = avatarUrl;
+                    img.alt = `Аватар ${member}`;
+                    img.onerror = function() { handleAvatarError(this, member); };
+                    avatarDiv.appendChild(img);
+                    
+                    // Блок информации (ник + статус)
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'member-info';
+                    
                     const nickSpan = document.createElement('div');
                     nickSpan.className = 'member-nick';
                     nickSpan.innerText = member;
                     
-                    // Маленький статус (можно просто обозначение должности, но для красоты добавим легкий бейдж)
                     const statusSpan = document.createElement('div');
                     statusSpan.className = 'member-status';
                     statusSpan.style.backgroundColor = `${group.color}20`;
                     statusSpan.style.borderLeft = `3px solid ${group.color}`;
                     statusSpan.style.color = '#eef3ff';
-                    // Укороченное название роли
+                    // Укороченное название роли для бейджа
                     let shortRole = group.title;
                     if (group.title === "Старший модератор") shortRole = "Ст. модератор";
                     statusSpan.innerText = shortRole;
                     
-                    memberDiv.appendChild(nickSpan);
-                    memberDiv.appendChild(statusSpan);
+                    infoDiv.appendChild(nickSpan);
+                    infoDiv.appendChild(statusSpan);
+                    
+                    memberDiv.appendChild(avatarDiv);
+                    memberDiv.appendChild(infoDiv);
                     membersListDiv.appendChild(memberDiv);
                 });
             }
@@ -354,11 +442,11 @@
         });
     }
 
-    // Анимация появления групп при загрузке
+    // Анимация появления групп при загрузке + дополнительная проверка загрузки аватарок
     document.addEventListener('DOMContentLoaded', () => {
         renderRoleGroups();
         
-        // Плавное появление групп с задержкой
+        // Плавное появление групп
         const groups = document.querySelectorAll('.role-group');
         groups.forEach((group, idx) => {
             group.style.opacity = '0';
@@ -369,21 +457,46 @@
                 group.style.transform = 'translateY(0)';
             }, idx * 100);
         });
+        
+        // Дополнительная проверка аватарок (если долго грузятся или ошибка не сработала)
+        setTimeout(() => {
+            const allAvatars = document.querySelectorAll('.member-avatar img');
+            allAvatars.forEach(img => {
+                if (!img.complete || img.naturalWidth === 0) {
+                    if (!img.getAttribute('data-error-checked')) {
+                        img.setAttribute('data-error-checked', 'true');
+                        const parent = img.closest('.member-avatar');
+                        if (parent) {
+                            // получаем ник из соседнего блока
+                            const memberItem = img.closest('.member-item');
+                            if (memberItem) {
+                                const nickElement = memberItem.querySelector('.member-nick');
+                                if (nickElement) {
+                                    const nickname = nickElement.innerText;
+                                    handleAvatarError(img, nickname);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }, 1500);
     });
 </script>
 
 <style>
-    /* Дополнительные стили для цветовых акцентов */
-    .group-header span:last-child {
-        font-weight: 700;
-        letter-spacing: 0.3px;
+    /* дополнительные стили для аватарок и списков */
+    .member-avatar {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .member-item:hover .member-avatar {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 2px rgba(255,215,0,0.6);
     }
     
     .member-status {
-        font-weight: 500;
-        font-size: 0.7rem;
-        text-transform: uppercase;
         backdrop-filter: blur(2px);
+        font-weight: 600;
     }
     
     .empty-message {
@@ -391,7 +504,6 @@
         letter-spacing: 0.3px;
     }
     
-    /* кастомный скролл для красоты (опционально) */
     ::-webkit-scrollbar {
         width: 5px;
     }
@@ -408,12 +520,18 @@
         transition: transform 0.2s, border-color 0.2s;
     }
     
-    .member-item .member-nick {
+    .member-nick {
         transition: 0.1s;
     }
     
     .member-item:hover .member-nick {
         text-shadow: 0 0 5px rgba(255,255,200,0.5);
+    }
+    
+    /* фикс для очень длинных ников */
+    .member-info {
+        flex-wrap: wrap;
+        align-items: baseline;
     }
 </style>
 </body>
