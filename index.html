@@ -162,7 +162,7 @@
             padding-left: 1.8rem;
         }
 
-        /* аватарка — КВАДРАТНАЯ, без скруглений */
+        /* аватарка — КВАДРАТНАЯ, без скруглений, рамка цвета группы */
         .member-avatar {
             width: 42px;
             height: 42px;
@@ -170,10 +170,10 @@
             background: #1e2a3a;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 215, 0, 0.5);
             transition: 0.2s;
             /* квадрат! border-radius: 0 */
             border-radius: 0;
+            /* рамка будет задана динамически через style в JS */
         }
 
         .member-avatar img {
@@ -318,7 +318,7 @@
             title: "Куратор",
             icon: "",
             color: "#FF1493",      // DeepPink
-            members: ["Sseyn2"]            // никто
+            members: ["Sseyn2"]
         },
         {
             title: "Старший модератор",
@@ -330,12 +330,12 @@
             title: "Модератор",
             icon: "",
             color: "#00BFFF",      // DeepSkyBlue
-            members: []            // никто
+            members: []
         },
         {
             title: "Хелпер",
             icon: "",
-            color: "#FF8C00",      // DarkOrange
+            color: "#19CF2A",      // зеленый
             members: ["BAHKIR", "itzWeid", "azxsdcvv"]
         }
     ];
@@ -346,7 +346,7 @@
     }
 
     // Обработка ошибки загрузки аватарки (ставим первую букву ника)
-    function handleAvatarError(imgElement, nickname) {
+    function handleAvatarError(imgElement, nickname, groupColor) {
         const parent = imgElement.parentElement;
         if (!parent) return;
         const fallbackDiv = document.createElement('div');
@@ -356,8 +356,8 @@
         fallbackDiv.innerText = firstChar;
         fallbackDiv.style.fontSize = '1rem';
         fallbackDiv.style.fontWeight = 'bold';
-        fallbackDiv.style.background = 'linear-gradient(145deg, #4625A1, #4625A1)';
-        fallbackDiv.style.borderRadius = '0'; // квадратный fallback
+        fallbackDiv.style.background = `linear-gradient(145deg, ${groupColor}80, ${groupColor}30)`;
+        fallbackDiv.style.borderRadius = '0';
         parent.innerHTML = '';
         parent.appendChild(fallbackDiv);
         fallbackDiv.title = ``;
@@ -399,14 +399,18 @@
                     const memberDiv = document.createElement('div');
                     memberDiv.className = 'member-item';
                     
-                    // Блок аватарки (квадратный)
+                    // Блок аватарки (квадратный) с рамкой цвета группы
                     const avatarDiv = document.createElement('div');
                     avatarDiv.className = 'member-avatar';
+                    // Устанавливаем рамку цвета группы (2px solid)
+                    avatarDiv.style.border = `2px solid ${group.color}`;
+                    avatarDiv.style.boxShadow = `0 0 0 1px rgba(0,0,0,0.2)`;
+                    
                     const img = document.createElement('img');
                     const avatarUrl = getAvatarUrl(member);
                     img.src = avatarUrl;
                     img.alt = `Аватар ${member}`;
-                    img.onerror = function() { handleAvatarError(this, member); };
+                    img.onerror = function() { handleAvatarError(this, member, group.color); };
                     avatarDiv.appendChild(img);
                     
                     // Блок информации (ник + статус)
@@ -422,14 +426,15 @@
                     statusSpan.style.backgroundColor = `${group.color}20`;
                     statusSpan.style.borderLeft = `3px solid ${group.color}`;
                     statusSpan.style.color = '#eef3ff';
-                    // Укороченное название роли для бейджа
-                    let shortRole = group.title;
-                    if (group.title === "Старший модератор") shortRole = "Ст. модератор";
-                    statusSpan.innerText = shortRole;
-
-                    let shortRole2 = group.title;
-                    if (group.title === "Владельцы") shortRole2 = "Владелец";
-                    statusSpan.innerText = shortRole2;
+                    
+                    // Правильное отображение роли (для единственного числа)
+                    let roleText = group.title;
+                    if (group.title === "Владельцы") roleText = "Владелец";
+                    if (group.title === "Хелперы") roleText = "Хелпер";
+                    if (group.title === "Куратор") roleText = "Куратор";
+                    if (group.title === "Старший модератор") roleText = "Ст. модератор";
+                    if (group.title === "Модератор") roleText = "Модератор";
+                    statusSpan.innerText = roleText;
                     
                     infoDiv.appendChild(nickSpan);
                     infoDiv.appendChild(statusSpan);
@@ -476,7 +481,16 @@
                                 const nickElement = memberItem.querySelector('.member-nick');
                                 if (nickElement) {
                                     const nickname = nickElement.innerText;
-                                    handleAvatarError(img, nickname);
+                                    // Пытаемся определить цвет группы по рамке родителя
+                                    let groupColor = "#FF0000";
+                                    const avatarDiv = img.closest('.member-avatar');
+                                    if (avatarDiv) {
+                                        const borderColor = avatarDiv.style.borderColor;
+                                        if (borderColor && borderColor !== '') {
+                                            groupColor = borderColor;
+                                        }
+                                    }
+                                    handleAvatarError(img, nickname, groupColor);
                                 }
                             }
                         }
