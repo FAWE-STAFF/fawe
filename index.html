@@ -300,9 +300,8 @@
             <div class="stat-item"><strong>3 хелпера</strong></div>
         </div>
         <div style="margin-top: 8px; font-size: 0.7rem; opacity: 0.7;">
-            🖼️ Аватарки загружаются через Minotar (квадратные, без скруглений)
         </div>
-        <div style="margin-top: 6px;">© 2025 · Проект _chmonya</div>
+        <div style="margin-top: 6px;">© 2026 · FAWE</div>
     </div>
 </div>
 
@@ -319,7 +318,7 @@
             title: "Куратор",
             icon: "",
             color: "#FF1493",      // DeepPink
-            members: ["Ssen2"]            // никто
+            members: ["Sseyn2"]            // никто
         },
         {
             title: "Старший модератор",
@@ -427,6 +426,10 @@
                     let shortRole = group.title;
                     if (group.title === "Старший модератор") shortRole = "Ст. модератор";
                     statusSpan.innerText = shortRole;
+
+                    let shortRole2 = group.title;
+                    if (group.title === "Владельцы") shortRole2 = "Владелец";
+                    statusSpan.innerText = shortRole2;
                     
                     infoDiv.appendChild(nickSpan);
                     infoDiv.appendChild(statusSpan);
